@@ -12,7 +12,7 @@ import plotly.express as px
 
 from pypfopt import risk_models
 from pypfopt import expected_returns
-from pypfopt import CLA, plotting
+from pypfopt import CLA
 from pypfopt import DiscreteAllocation
 from pypfopt import EfficientFrontier
 
@@ -44,7 +44,7 @@ sample_cov = risk_models.sample_cov(prices, frequency=252)
 #plotting.plot_covariance(sample_cov, plot_correlation=True)
 
 S = risk_models.CovarianceShrinkage(prices).ledoit_wolf()
-plotting.plot_covariance(S, plot_correlation=True)
+#plotting.plot_covariance(S, plot_correlation=True)
 
 fig = px.imshow(S,text_auto=True)
 st.plotly_chart(fig, use_container_width=True)
@@ -65,7 +65,7 @@ weights_series = list(weights.items())
 
 df_sharpe_portfolio = pd.DataFrame(weights_series)
 df_sharpe_portfolio = df_sharpe_portfolio.rename(columns={0: 'Stock', 1: 'Percentage'})
-df_sharpe_portfolio
+#df_sharpe_portfolio
 
 fig_pie_sharpe = px.pie(df_sharpe_portfolio[df_sharpe_portfolio['Percentage']>0], values='Percentage', names='Stock')
 st.plotly_chart(fig_pie_sharpe, use_container_width=True)
@@ -75,7 +75,6 @@ st.subheader("Fronteira Eficiente")
 cla = CLA(mu, S)
 cla.max_sharpe()
 ef_text = cla.portfolio_performance(verbose=True)
-st.markdown(ef_text)
-
-ax = plotting.plot_efficient_frontier(cla, showfig=False)
-st.write(ax)
+st.markdown(ef_text[0])
+st.markdown(ef_text[1])
+st.markdown(ef_text[2])
